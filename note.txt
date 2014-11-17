@@ -1,0 +1,15 @@
+output{
+        elasticsearch {
+                type => "syslog"
+                embedded => true
+                host => localhost
+                protocol => "http"
+                port => "9200"
+        }
+        stdout{
+                codec => rubydebug
+        }
+
+}
+
+khi logstash khong ket noi duoc elasticsearch thi can them cac thong so nhu tren
