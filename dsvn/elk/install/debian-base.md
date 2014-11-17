@@ -25,6 +25,7 @@ Khởi động dịch vụ **ElasticSearch**
 ```
 sudo service elasticsearch start
 ```
+
 Để **ElasticSearch** chạy khi khởi động, chạy
 ```
 sudo update-rc.d elasticsearch defaults 95 10
@@ -42,6 +43,7 @@ sudo apt-get update
 sudo apt-get install logstash=1.4.2-1-2c0f5a1
 ```
 Ở đây ta cài bản 1.4.2, chú ý rằng bạn sẽ thay thế chuỗi phía sau dấu `=` bằng nếu muốn dùng phiên bản khác.
+
 Khởi động **logstash**
 ```
 sudo service logstash start
@@ -59,7 +61,7 @@ sudo mkdir -p /srv/www/kibana
 sudo tar xf kibana-3.1.0.tar.gz -C /srv/www/  
 sudo chown -R www-data:www-data /srv/www/  
 ```
-Ở đây tôi dùng phiên bản `3.1.0`, bạn sẽ thay `3.1.0` bằng tên phiên bản Kibana mà bạn dùng.
+Ở đây dùng phiên bản `3.1.0`, bạn sẽ thay `3.1.0` bằng tên phiên bản Kibana mà bạn dùng.
 
 #####Cấu hình nginx
 <br/>

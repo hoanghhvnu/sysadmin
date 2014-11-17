@@ -20,23 +20,20 @@ scp /etc/pki/tls/certs/logstash-forwarder.crt user@server_private_IP:/tmp
 
 Trong đó __user__ và **server\_private\_ID** đuợc thay thế tuơng ứng với user và đỉa chị ip thực tế.
 
-Tải về file cài đặt
-```
-cd ~;
-curl -O http://packages.elasticsearch.org/logstashforwarder/centos/logstash-forwarder-0.3.1-1.x86_64.rpm
-```
-Cài đặt
+
+**Cài đặt**
 
 ```
-sudo rpm -ivh ~/logstash-forwarder-0.3.1-1.x86_64.rpm
+wget https://assets.digitalocean.com/articles/logstash/logstash-forwarder_0.3.1_i386.deb
+sudo dpkg -i logstash-forwarder_0.3.1_i386.deb
 ```
 Bạn sẽ thay tên phiên bản tuơng ứng phù hợp với máy của bạn.
 
 Để Logstash forwarder tự động chạy khi khởi động:
 ```
-cd /etc/init.d/;
-sudo curl -o logstash-forwarder http://logstashbook.com/code/4/logstash_forwarder_redhat_init
+cd /etc/init.d/; sudo wget https://raw.github.com/elasticsearch/logstash-forwarder/master/logstash-forwarder.init -O logstash-forwarder
 sudo chmod +x logstash-forwarder
+sudo update-rc.d logstash-forwarder defaults
 ```
 ```
 sudo curl -o /etc/sysconfig/logstash-forwarder http://logstashbook.com/code/4/logstash_forwarder_redhat_sysconfig
@@ -92,4 +89,59 @@ sudo chkconfig --add logstash-forwarder
 Khởi động dịch vụ:
 ```
 sudo service logstash-forwarder start
+```
+
+## 3. Cấu hình Logstash cho remote server
+Ở **Logstash-server**:
+Tạo file cấu hình cho input
+```
+sudo vi /etc/logstash/conf.d/01-lumberjack-input.conf
+```
+Thêm nội dung sau:
+```
+input {
+  lumberjack {
+    port => 5000
+    type => "logs"
+    ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
+    ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
+  }
+}
+```
+Tạo file bộ lọc:
+```
+sudo vi /etc/logstash/conf.d/10-syslog.conf
+```
+Nội dung:
+```
+filter {
+  if [type] == "syslog" {
+    grok {
+      match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+      add_field => [ "received_at", "%{@timestamp}" ]
+      add_field => [ "received_from", "%{host}" ]
+    }
+    syslog_pri { }
+    date {
+      match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+    }
+  }
+}
+```
+Tạo file output:
+```
+sudo vi /etc/logstash/conf.d/30-lumberjack-output.conf
+```
+Nội dung:
+```
+output {
+  if [type] == "syslog" {
+    elasticsearch { host => localhost }
+    stdout { codec => rubydebug }
+  }
+}
+```
+Khởi động lại **Logstash**
+```
+sudo service logstash restart
 ```
