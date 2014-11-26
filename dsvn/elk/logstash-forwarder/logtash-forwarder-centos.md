@@ -18,7 +18,7 @@ Copy file `*.cert` đến **Server** cài đặt **Logstash-forwarder** (làm đ
 scp /etc/pki/tls/certs/logstash-forwarder.crt user@server_private_IP:/tmp
 ```
 
-Trong đó __user__ và **server\_private\_ID** đuợc thay thế tuơng ứng với user và đỉa chị ip thực tế.
+Trong đó _user_ và *server\_private\_ID* đuợc thay thế tuơng ứng với user và đỉa chị ip thực tế.
 
 
 Trên **Server** (cài Logstash forwarder)
@@ -55,9 +55,9 @@ sudo cp /tmp/logstash-forwarder.crt /etc/pki/tls/certs/
 ```
 
 ## 2. Cấu hình
-Trên mỗi **Server** (cài đặt **Logstash-forwarder**):
+Trên mỗi **Server** (cài đặt *Logstash-forwarder*):
 
-Tạo file cấu hình cho **Logtash-forwarder**:
+Tạo file cấu hình cho *Logtash-forwarder*:
 
 ```
 sudo vi /etc/logstash-forwarder
@@ -82,12 +82,12 @@ Thêm nội dung vào như sau:
    ]
 }
 ```
-Với **logstash\_server\_private\_IP** đuợc thay bằng IP của **Logstash-Server**, **_5000_** chính là cổng lắng nghe **Logtash-forwarder** tại **Logtash-Server**.
+Với *logstash\_server\_private\_IP* đuợc thay bằng IP của *Logstash-Server*, **_5000_** chính là cổng lắng nghe *Logtash-forwarder* tại *Logtash-Server*.
 <br/>
-File cấu hình đuợc tổ chức theo JSON, đầu tiên là đối tượng **network**, sau đó là các *input* đầu vào cho **Logstash** trên **Logstash-server**.
+File cấu hình đuợc tổ chức theo JSON, đầu tiên là đối tượng *network*, sau đó là các *input* đầu vào cho *Logstash* trên *Logstash-server*.
 Ở đây ta có 2 file đầu vào đuợc chỉ định trong trường *paths*, kiểu đầu vào đuợc chỉ định trong trường *fields*.
 
-Thêm **Logstash-forwarder** vào *chkconfig*
+Thêm *Logstash-forwarder* vào *chkconfig*
 ```
 sudo chkconfig --add logstash-forwarder
 ```

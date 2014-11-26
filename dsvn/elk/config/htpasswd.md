@@ -4,6 +4,7 @@
 `which htpasswd`.
 
 Nếu chưa cài thực hiện việc cài đặt trước tiên.
+
 Trên **Red hat base:**
 ```
 sudo yum install httpd-tools
