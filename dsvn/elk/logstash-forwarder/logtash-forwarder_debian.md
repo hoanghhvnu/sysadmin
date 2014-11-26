@@ -20,7 +20,7 @@ scp /etc/pki/tls/certs/logstash-forwarder.crt user@server_private_IP:/tmp
 
 Trong đó __user__ và **server\_private\_ID** đuợc thay thế tuơng ứng với user và đỉa chị ip thực tế.
 
-
+Trên **Server** (cài Logstash forwarder)
 **Cài đặt**
 
 ```
