@@ -1,4 +1,14 @@
-# Install check mk agent
+# Check mk system
+
+## Check mk server
+### How start (already installed)
+1. Run apache
+3. Run omd
+```
+omd start
+```
+
+## Check mk agent
 1. Install **xinetd**
 ```
 sudo yum install xinetd
@@ -7,3 +17,5 @@ sudo yum install xinetd
 ```
 rpm -i <name>
 ```
+### Start
+```service xinetd start```
